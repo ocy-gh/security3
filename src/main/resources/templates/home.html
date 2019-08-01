@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+      xmlns:sec="http://www.w3.org/1999/xhtml%22%3E">
+<!--      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"-->
 <head>
     <meta content="text/html;charset=UTF-8"/>
     <title sec:authentication="name"></title>
-    <link rel="stylesheet" th:href="@{css/bootstrap.min.css}" />
     <style type="text/css">
         body {
             padding-top: 50px;
@@ -37,12 +37,16 @@
 
         <p class="bg-primary" th:text="${msg.content}"></p>
 
-        <div sec:authorize="hasRole('ROLE_ADMIN')"> <!-- 用户类型为ROLE_ADMIN 显示 -->
+        <div class="row" th:if="${#request.isUserInRole('ROLE_ADMIN')}"> <!-- 用户类型为ROLE_ADMIN 显示 -->
             <p class="bg-info" th:text="${msg.etraInfo}"></p>
         </div>
 
-        <div sec:authorize="hasRole('ROLE_USER')"> <!-- 用户类型为 ROLE_USER 显示 -->
-            <p class="bg-info">USER MESSAGE</p>
+        <div class="row" th:if="${#request.isUserInRole('ROLE_ADMIN')}"> <!-- 用户类型为 ROLE_USER 显示 -->
+            <p class="bg-info">ONLY FOR ADMIN!</p>
+        </div>
+
+        <div class="row" th:if="${#request.isUserInRole('ROLE_USER')}">
+            <h2>This will only be displayed if authenticated user has role USER.</h2>
         </div>
 
         <form th:action="@{/logout}" method="post">
